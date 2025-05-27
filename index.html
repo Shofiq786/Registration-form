@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order & Payment Form</title>
+  <style>
+    body {
+      padding: 70px 0 0 0;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease-in-out;
+      background-image: url("font-school.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .form-container {
+      background: #04040470;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 450px;
+      width: 90%;
+      animation: slideUp 1s ease-in-out;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #ff5e78;
+      outline: none;
+      box-shadow: 0 0 5px rgba(255, 94, 120, 0.5);
+    }
+    button {
+      width: 100%;
+      background-color: #ff5e78;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #e14b66;
+      transform: scale(1.03);
+    }
+    .success-msg {
+      text-align: center;
+      margin-top: 15px;
+      color: #e0ff94;
+      display: none;
+      font-size: xx-large;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>হ্যালো SSC 21 <br>পুনর্মিলনীতে যোগদানের জন্য ফর্মটি পূরণ করুন। </h2>
+    <form id="order-form">
+      <div class="form-group">
+        <label for="name">নাম</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="mobile"> মোবাইল নাম্বার</label>
+        <input type="tel" id="mobile" name="mobile"  required />
+      </div>
+
+      <div class="form-group">
+        <label for="village"> গ্রাম</label>
+        <input type="text" id="village" name="village" required />
+      </div>
+
+      <div class="form-group">
+        <label for="order-type">তুমি কোনটা খেতে চাও(পোলাও/সাদা ভাত)</label>
+        <select id="order-type" name="orderType" required>
+          <option value="" disabled selected>Select Item</option>
+          <option value="Vat">সাদা ভাত</option>
+          <option value="Polao">পোলাও</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="payment-method">বৈবাহিক অবস্থা</label>
+        <select id="payment-method" name="paymentMethod" required>
+          <option value="" disabled selected>Select</option>
+          <option value="Bkash">বিবাহিত</option>
+          <option value="Cash"> অবিবাহিত</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="payment-date">যা খুশি তাই লেখো</label>
+        <input type="text" id="payment-date" name="paymentDate" required />
+      </div>
+
+      <button type="submit">Submit</button>
+      <div class="success-msg" id="success">Thank 😊! Powered by Shofiqul 😊</div>
+    </form>
+  </div>
+
+  <script>
+    // এখানে তোমার Google Apps Script ওয়েব অ্যাপ URL বসাবে
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxztuWQde3BLX0Mzr-4IEHjwzJr2jhkXl41Js2CgJVMfXjPwrtK4d5ihHk2v_IgWpH0/exec';
+
+    const form = document.getElementById('order-form');
+    const successMsg = document.getElementById('success');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const data = {
+        name: form.name.value,
+        mobile: form.mobile.value,
+        village: form.village.value,
+        orderType: form.orderType.value,
+        paymentMethod: form.paymentMethod.value,
+        paymentDate: form.paymentDate.value,
+      };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data),
+      })
+      .then(() => {
+        successMsg.style.display = 'block';
+        form.reset();
+      })
+      .catch(error => console.error('Error!', error.message));
+    });
+  </script>
+</body>
+</html>
